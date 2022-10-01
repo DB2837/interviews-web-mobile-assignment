@@ -1,34 +1,58 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import './App.css'
+import { useState } from 'react';
+import styled from 'styled-components';
+import ErrorBox from './components/ErrorBox';
+import Loader from './components/Loader';
+import PostCard, { TPost } from './components/PostCard';
+import useFetchData from './hooks/useFetchData';
+
+const URL = 'https://jsonplaceholder.typicode.com/posts?_page=0&_limit=6';
 
 function App() {
-  const [count, setCount] = useState(0)
+  const { data: posts, error, loading } = useFetchData(URL);
 
   return (
-    <div className="App">
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src="/vite.svg" className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://reactjs.org" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </div>
-  )
+    <PageContainer>
+      {loading ? (
+        <Loader />
+      ) : error ? (
+        <ErrorBox />
+      ) : (
+        <>
+          {' '}
+          <>
+            <PostsContainer>
+              {posts?.length > 0 &&
+                posts.map((post: TPost) => {
+                  return (
+                    <PostCard
+                      body={post.body}
+                      id={post.id}
+                      title={post.title}
+                      userId={post.userId}
+                    />
+                  );
+                })}
+            </PostsContainer>
+          </>
+        </>
+      )}
+    </PageContainer>
+  );
 }
 
-export default App
+export default App;
+
+const PageContainer = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding: 3rem;
+`;
+
+const PostsContainer = styled.main`
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  max-width: 1100px;
+  min-width: 320px;
+`;
