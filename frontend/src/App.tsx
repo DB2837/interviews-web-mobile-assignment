@@ -19,21 +19,20 @@ function App() {
       ) : (
         <>
           {' '}
-          <>
-            <PostsContainer>
-              {posts?.length > 0 &&
-                posts.map((post: TPost) => {
-                  return (
-                    <PostCard
-                      body={post.body}
-                      id={post.id}
-                      title={post.title}
-                      userId={post.userId}
-                    />
-                  );
-                })}
-            </PostsContainer>
-          </>
+          <PostsContainer>
+            {posts?.length > 0 &&
+              posts.map((post: TPost) => {
+                return (
+                  <PostCard
+                    key={post.id}
+                    body={post.body}
+                    id={post.id}
+                    title={post.title}
+                    userId={post.userId}
+                  />
+                );
+              })}
+          </PostsContainer>
         </>
       )}
     </PageContainer>
