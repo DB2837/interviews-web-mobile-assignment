@@ -1,20 +1,26 @@
-import React from 'react';
 import styled from 'styled-components';
-import PostCard, { Post } from './PostCard';
+import PostCard from './PostCard';
+
+export type Post = {
+  body: string;
+  id: number;
+  title: string;
+  userId: number;
+};
 
 type TProps = {
   posts: Post[];
-  setPosts: React.Dispatch<any>;
+  setPosts: React.Dispatch<React.SetStateAction<Post[]>>;
 };
 
 const Posts = ({ posts, setPosts }: TProps) => {
-  const handleDeletePost = (id: number) => {
-    setPosts((prev: Post[]) => prev.filter((post) => post.id !== id));
+  const handleDelete = (id: number) => {
+    setPosts((prev) => prev.filter((post) => post.id !== id));
   };
   return (
     <PostsContainer>
       {posts?.length > 0 ? (
-        posts.map((post: Post) => {
+        posts.map((post) => {
           return (
             <PostCard
               key={post.id}
@@ -22,7 +28,7 @@ const Posts = ({ posts, setPosts }: TProps) => {
               id={post.id}
               title={post.title}
               userId={post.userId}
-              handleDelete={() => handleDeletePost(post.id)}
+              handleDelete={() => handleDelete(post.id)}
             />
           );
         })

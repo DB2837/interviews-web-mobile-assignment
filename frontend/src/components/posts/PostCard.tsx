@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { AiOutlineEdit, AiOutlineDelete } from 'react-icons/ai';
 
-export type Post = {
+type TProps = {
   body: string;
   id: number;
   title: string;
@@ -10,7 +10,7 @@ export type Post = {
   handleDelete: () => void;
 };
 
-const PostCard = ({ body, id, title, userId, handleDelete }: Post) => {
+const PostCard = ({ body, id, title, userId, handleDelete }: TProps) => {
   return (
     <CardContainer>
       <TitleWrapper>
