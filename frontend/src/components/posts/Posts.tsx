@@ -1,4 +1,11 @@
+import { useContext, useRef } from 'react';
 import styled from 'styled-components';
+import { IoMdAddCircle } from 'react-icons/io';
+import { ModalsContext } from '../../context/modals.context';
+import { PostsContext } from '../../context/posts.context';
+import AddPostModal from '../modals/AddPostModal';
+import ConformDeletionModal from '../modals/ConformDeletionModal';
+import EditPostModal from '../modals/EditPostModal';
 import PostCard from './PostCard';
 
 export type Post = {
@@ -8,40 +15,100 @@ export type Post = {
   userId: number;
 };
 
-type TProps = {
-  posts: Post[];
-  setPosts: React.Dispatch<React.SetStateAction<Post[]>>;
-};
+const Posts = () => {
+  const { posts } = useContext(PostsContext);
+  const { modals, setModals } = useContext(ModalsContext);
+  const selectedPostRef = useRef<Post | null>(null);
 
-const Posts = ({ posts, setPosts }: TProps) => {
-  const handleDelete = (id: number) => {
-    setPosts((prev) => prev.filter((post) => post.id !== id));
+  const handleEditPost = (post: Post) => {
+    selectedPostRef.current = post;
+    setModals((prev) => ({
+      ...prev,
+      editPost: true,
+    }));
   };
+
+  const handleDeletePost = (post: Post) => {
+    selectedPostRef.current = post;
+    setModals((prev) => ({
+      ...prev,
+      confirmDeletion: true,
+    }));
+  };
+
+  const handleAddPost = () => {
+    setModals((prev) => ({
+      ...prev,
+      addPost: true,
+    }));
+  };
+
+  const handleCloseModal = () => {
+    selectedPostRef.current = null;
+    setModals(() => ({
+      editPost: false,
+      confirmDeletion: false,
+      addPost: false,
+    }));
+  };
+
   return (
-    <PostsContainer>
-      {posts?.length > 0 ? (
-        posts.map((post) => {
-          return (
-            <PostCard
-              key={post.id}
-              body={post.body}
-              id={post.id}
-              title={post.title}
-              userId={post.userId}
-              handleDelete={() => handleDelete(post.id)}
-            />
-          );
-        })
-      ) : (
-        <div>
-          <h3>No posts to show</h3>
-        </div>
+    <>
+      {selectedPostRef.current && modals.editPost && (
+        <EditPostModal
+          post={selectedPostRef.current}
+          handleCloseModal={handleCloseModal}
+        />
       )}
-    </PostsContainer>
+
+      {selectedPostRef.current && modals.confirmDeletion && (
+        <ConformDeletionModal
+          post={selectedPostRef.current}
+          handleCloseModal={handleCloseModal}
+        />
+      )}
+
+      {modals.addPost && <AddPostModal handleCloseModal={handleCloseModal} />}
+
+      <PostsContainer>
+        <AddPostContainer>
+          <h3>new post</h3>
+          <IoMdAddCircle style={IconStyle} onClick={handleAddPost} />
+        </AddPostContainer>
+        {posts?.length > 0 ? (
+          posts
+            .map((post) => {
+              return (
+                <PostCard
+                  key={post.id}
+                  body={post.body}
+                  id={post.id}
+                  title={post.title}
+                  userId={post.userId}
+                  handleDeletePost={() => handleDeletePost(post)}
+                  handleEditPost={() => handleEditPost(post)}
+                />
+              );
+            })
+            .reverse()
+        ) : (
+          <div>
+            <h3>No posts to show</h3>
+          </div>
+        )}
+      </PostsContainer>
+    </>
   );
 };
 
 export default Posts;
+
+const IconStyle = {
+  fontSize: '1.6rem',
+  margin: ' 0 .6rem',
+  cursor: 'pointer',
+  color: '#ff7a41',
+};
 
 const PostsContainer = styled.main`
   display: flex;
@@ -49,4 +116,13 @@ const PostsContainer = styled.main`
   gap: 1rem;
   max-width: 1100px;
   min-width: 320px;
+  height: 100%;
+`;
+
+const AddPostContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+  width: 100%;
 `;
