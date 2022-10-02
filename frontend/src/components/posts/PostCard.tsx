@@ -7,17 +7,25 @@ type TProps = {
   id: number;
   title: string;
   userId: number;
-  handleDelete: () => void;
+  handleDeletePost: () => void;
+  handleEditPost: () => void;
 };
 
-const PostCard = ({ body, id, title, userId, handleDelete }: TProps) => {
+const PostCard = ({
+  body,
+  id,
+  title,
+  userId,
+  handleEditPost,
+  handleDeletePost,
+}: TProps) => {
   return (
     <CardContainer>
       <TitleWrapper>
         <h3>{title}</h3>
         <IconsContainer>
-          <AiOutlineEdit style={IconStyle} />
-          <AiOutlineDelete style={IconStyle} onClick={handleDelete} />
+          <AiOutlineEdit style={IconStyle} onClick={handleEditPost} />
+          <AiOutlineDelete style={IconStyle} onClick={handleDeletePost} />
         </IconsContainer>
       </TitleWrapper>
       <BodyWrapper>
@@ -34,13 +42,13 @@ const IconStyle = {
   fontSize: '1.4rem',
   margin: ' .25rem',
   cursor: 'pointer',
+  color: '#ff7a41',
 };
 
 const CardContainer = styled.div`
   position: relative;
   display: flex;
   flex-direction: column;
-  /*  border: 2px solid orange; */
   padding: 2rem;
   max-height: 500px;
 
@@ -62,6 +70,7 @@ const TitleWrapper = styled.div`
 
 const BodyWrapper = styled.div`
   margin-top: 1rem;
+  color: #b8b8b8;
 `;
 
 const IconsContainer = styled.div`
