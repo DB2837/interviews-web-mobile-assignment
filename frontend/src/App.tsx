@@ -1,57 +1,39 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import ErrorBox from './components/ErrorBox';
 import Loader from './components/Loader';
-import PostCard, { TPost } from './components/PostCard';
+import Posts from './components/posts/Posts';
+import { ModalsContext, TModals } from './context/modals.context';
+import { PostsContext } from './context/posts.context';
 import useFetchData from './hooks/useFetchData';
 
-const URL = 'https://jsonplaceholder.typicode.com/posts?_page=0&_limit=6';
+const URL = `https://jsonplaceholder.typicode.com/posts?_page=0&_limit=6`;
 
 function App() {
-  const { data: posts, error, loading } = useFetchData(URL);
+  const { data: posts, setData: setPosts, error, loading } = useFetchData(URL);
+  const [modals, setModals] = useState<TModals>(() => ({
+    editPost: false,
+    confirmDeletion: false,
+    addPost: false,
+  }));
 
   return (
-    <PageContainer>
-      {loading ? (
-        <Loader />
-      ) : error ? (
-        <ErrorBox />
-      ) : (
-        <>
-          {' '}
-          <PostsContainer>
-            {posts?.length > 0 &&
-              posts.map((post: TPost) => {
-                return (
-                  <PostCard
-                    key={post.id}
-                    body={post.body}
-                    id={post.id}
-                    title={post.title}
-                    userId={post.userId}
-                  />
-                );
-              })}
-          </PostsContainer>
-        </>
-      )}
-    </PageContainer>
+    <PostsContext.Provider value={{ posts, setPosts }}>
+      <ModalsContext.Provider value={{ modals, setModals }}>
+        <PageContainer>
+          {loading ? <Loader /> : error ? <ErrorBox /> : <Posts />}
+        </PageContainer>
+      </ModalsContext.Provider>
+    </PostsContext.Provider>
   );
 }
 
 export default App;
 
 const PageContainer = styled.div`
+  position: relative;
   width: 100%;
   display: flex;
   justify-content: center;
   padding: 3rem;
-`;
-
-const PostsContainer = styled.main`
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  max-width: 1100px;
-  min-width: 320px;
 `;
