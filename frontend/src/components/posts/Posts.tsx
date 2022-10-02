@@ -1,4 +1,4 @@
-import { useContext, useRef } from 'react';
+import { useContext, useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import { IoMdAddCircle } from 'react-icons/io';
 import { ModalsContext } from '../../context/modals.context';
@@ -7,6 +7,7 @@ import AddPostModal from '../modals/AddPostModal';
 import ConformDeletionModal from '../modals/ConformDeletionModal';
 import EditPostModal from '../modals/EditPostModal';
 import PostCard from './PostCard';
+import Slider from './Slider';
 
 export type Post = {
   body: string;
@@ -15,10 +16,21 @@ export type Post = {
   userId: number;
 };
 
-const Posts = () => {
+type TProps = {
+  currentPage: number;
+  totalPages: number;
+  setCurrentPage: React.Dispatch<React.SetStateAction<number>>;
+};
+
+const Posts = ({ currentPage, setCurrentPage, totalPages }: TProps) => {
   const { posts } = useContext(PostsContext);
   const { modals, setModals } = useContext(ModalsContext);
   const selectedPostRef = useRef<Post | null>(null);
+  const topRef = useRef<HTMLElement | null>(null);
+
+  useEffect(() => {
+    topRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [topRef.current, currentPage]);
 
   const handleEditPost = (post: Post) => {
     selectedPostRef.current = post;
@@ -70,7 +82,7 @@ const Posts = () => {
 
       {modals.addPost && <AddPostModal handleCloseModal={handleCloseModal} />}
 
-      <PostsContainer>
+      <PostsContainer ref={topRef}>
         <AddPostContainer>
           <h3>new post</h3>
           <IoMdAddCircle style={IconStyle} onClick={handleAddPost} />
@@ -96,6 +108,11 @@ const Posts = () => {
             <h3>No posts to show</h3>
           </div>
         )}
+        <Slider
+          currentPage={currentPage + 1}
+          totalPages={totalPages}
+          setCurrentPage={setCurrentPage}
+        />
       </PostsContainer>
     </>
   );
