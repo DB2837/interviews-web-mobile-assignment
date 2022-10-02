@@ -27,7 +27,7 @@ const useFetchData = (url: string) => {
     return () => controller.abort();
   }, [url]);
 
-  return { data, loading, error };
+  return { data, setData, loading, error };
 };
 
 export default useFetchData;
