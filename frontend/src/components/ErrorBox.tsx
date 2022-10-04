@@ -1,10 +1,14 @@
 import React from 'react';
 
-const ErrorBox = () => {
+type TProps = {
+  message: string;
+};
+
+const ErrorBox = ({ message }: TProps) => {
   return (
     <>
       <div>
-        <h3>Something went wrong, failed to fetch posts.</h3>
+        <h3>{message}</h3>
       </div>
     </>
   );
