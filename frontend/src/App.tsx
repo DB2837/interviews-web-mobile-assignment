@@ -31,7 +31,7 @@ function App() {
           {loading ? (
             <Loader />
           ) : error ? (
-            <ErrorBox />
+            <ErrorBox message='Something went wrong, failed to fetch posts.' />
           ) : (
             <Posts
               currentPage={currentPage}
