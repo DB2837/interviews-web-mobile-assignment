@@ -40,6 +40,7 @@ const Comments = ({ postId }: TProsp) => {
           {comments.map((comment: Comment) => {
             return (
               <CommentCard
+                key={comment.id}
                 body={comment.body}
                 name={comment.name}
                 email={comment.email}
