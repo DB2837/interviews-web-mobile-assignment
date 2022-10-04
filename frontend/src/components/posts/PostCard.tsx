@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { AiOutlineEdit, AiOutlineDelete } from 'react-icons/ai';
 import Comments from '../comments/Comments';
@@ -24,6 +24,10 @@ const PostCard = ({
 
   const toggleComments = () => setShowComments((prev) => !prev);
 
+  useEffect(() => {
+    setShowComments(false);
+  }, []);
+
   return (
     <CardContainer>
       <TitleWrapper>
@@ -41,7 +45,7 @@ const PostCard = ({
       </FlexEndContainer>
       {showComments && (
         <>
-          <Comments postId={id}/>
+          <Comments postId={id} />
         </>
       )}
       <Separator />
