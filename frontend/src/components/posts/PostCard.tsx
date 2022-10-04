@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { AiOutlineEdit, AiOutlineDelete } from 'react-icons/ai';
+import Comments from '../comments/Comments';
 
 type TProps = {
   body: string;
@@ -19,6 +20,10 @@ const PostCard = ({
   handleEditPost,
   handleDeletePost,
 }: TProps) => {
+  const [showComments, setShowComments] = useState(false);
+
+  const toggleComments = () => setShowComments((prev) => !prev);
+
   return (
     <CardContainer>
       <TitleWrapper>
@@ -31,6 +36,14 @@ const PostCard = ({
       <BodyWrapper>
         <p>{body}</p>
       </BodyWrapper>
+      <FlexEndContainer>
+        <CommentsIndicator onClick={toggleComments}>comments</CommentsIndicator>
+      </FlexEndContainer>
+      {showComments && (
+        <>
+          <Comments postId={id}/>
+        </>
+      )}
       <Separator />
     </CardContainer>
   );
@@ -80,11 +93,20 @@ const IconsContainer = styled.div`
   display: flex;
   justify-content: flex-end;
   width: 90px;
-  /*  border: 2px solid red; */
-  /*  font-size: 1.4rem; */
 `;
 
 const Separator = styled.div`
   border: 1px solid #fff;
   margin-top: 1.5rem;
+`;
+
+const FlexEndContainer = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  padding-top: 20px;
+`;
+
+const CommentsIndicator = styled.span`
+  font-weight: bold;
+  cursor: pointer;
 `;
