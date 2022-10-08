@@ -97,6 +97,7 @@ const Posts = ({ currentPage, setCurrentPage, totalPages }: TProps) => {
                   id={post.id}
                   title={post.title}
                   userId={post.userId}
+                  currentPage={currentPage}
                   handleDeletePost={() => handleDeletePost(post)}
                   handleEditPost={() => handleEditPost(post)}
                 />

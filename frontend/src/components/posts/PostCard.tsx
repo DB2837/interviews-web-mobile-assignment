@@ -8,6 +8,7 @@ type TProps = {
   id: number;
   title: string;
   userId: number;
+  currentPage: number;
   handleDeletePost: () => void;
   handleEditPost: () => void;
 };
@@ -17,6 +18,7 @@ const PostCard = ({
   id,
   title,
   userId,
+  currentPage,
   handleEditPost,
   handleDeletePost,
 }: TProps) => {
@@ -26,7 +28,7 @@ const PostCard = ({
 
   useEffect(() => {
     setShowComments(false);
-  }, []);
+  }, [currentPage]);
 
   return (
     <CardContainer>
