@@ -1,5 +1,5 @@
 import React from 'react';
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 import useFetchData from '../../hooks/useFetchData';
 import { BASE_URL } from '../../utils/urls';
 import ErrorBox from '../ErrorBox';
@@ -18,19 +18,18 @@ export type Comment = {
 
 type TProsp = {
   postId: number;
+  showComments: boolean;
 };
 
-const Comments = ({ postId }: TProsp) => {
+const Comments = ({ postId, showComments }: TProsp) => {
   const {
     data: comments,
     loading,
     error,
   } = useFetchData(`${BASE_URL}${postId}/comments`);
 
-  console.log(comments);
-
   return (
-    <CommentsContainer>
+    <CommentsContainer showComments={showComments}>
       {loading ? (
         <Loader />
       ) : error ? (
@@ -55,12 +54,24 @@ const Comments = ({ postId }: TProsp) => {
 
 export default Comments;
 
-const CommentsContainer = styled.div`
+const inAnimation = keyframes`
+ 0% {
+    opacity: 0;
+    visibility: hidden;
+  }
+ 100% {
+    opacity: 1;
+    visibility: visible;
+  }
+`;
+
+const CommentsContainer = styled.div<{ showComments: boolean }>`
   padding: 0.5rem;
   width: 100%;
   height: 300px;
   background-color: #464646;
-
+  animation: ${({ showComments }) => (showComments ? inAnimation : null)} 550ms
+    ease-in;
   -ms-overflow-style: none;
   scrollbar-width: none;
   overflow-y: scroll;
