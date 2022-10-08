@@ -45,7 +45,7 @@ const PostCard = ({
       </FlexEndContainer>
       {showComments && (
         <>
-          <Comments postId={id} />
+          <Comments postId={id} showComments={showComments} />
         </>
       )}
       <Separator />
