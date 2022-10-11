@@ -5,6 +5,7 @@ export const editPost = async (post: Post) => {
   return fetch(`${BASE_URL}${post.id}`, {
     method: 'PATCH',
     body: JSON.stringify({
+      userId: 1,
       title: post.title,
       body: post.body,
     }),

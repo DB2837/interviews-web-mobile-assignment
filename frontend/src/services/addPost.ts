@@ -7,7 +7,7 @@ export const addPost = async (post: Omit<Post, 'id'>) => {
     body: JSON.stringify({
       title: `${post.title}`,
       body: `${post.body}`,
-      userId: `${post.userId}`,
+      userId: 1,
     }),
     headers: {
       'Content-type': 'application/json; charset=UTF-8',
