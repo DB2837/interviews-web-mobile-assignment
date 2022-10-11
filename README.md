@@ -101,7 +101,7 @@ The requirements for this challenge are the exact same requirements of the Front
 ---
 
 ...
-![alt text](https://upload.wikimedia.org/wikipedia/commons/e/ec/Capybara_%28Hydrochoerus_hydrochaeris%29.JPG)
+![alt text](https://media.istockphoto.com/photos/young-capybara-picture-id177228186?s=612x612)
 
 ### Sections Completed
 
