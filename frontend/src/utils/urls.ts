@@ -1,1 +1,1 @@
-export const BASE_URL = 'https://jsonplaceholder.typicode.com/posts/';
+export const BASE_URL = 'http://localhost:3001/api/posts/';
