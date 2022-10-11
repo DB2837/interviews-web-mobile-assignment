@@ -2,6 +2,8 @@ import express, { Application } from 'express';
 import dotenv from 'dotenv';
 import prisma from '../src/utils/prismaClient';
 import cors from 'cors';
+import postRouter from './modules/post/post.route';
+import commentRouter from './modules/comment/comment.route';
 
 dotenv.config();
 const PORT = Number(process.env.PORT) || 3001;
@@ -15,6 +17,9 @@ app.use(
     origin: 'http://127.0.0.1:5173',
   })
 );
+
+app.use(postRouter);
+app.use(commentRouter);
 
 const main = async () => {
   try {
